@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام البلاغات الخاص بـ SM 1%</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #ff4d4d;
+            --text-color: #f0f0f0;
+            --dark-bg: #0f0f1a;
+            --glass-bg: rgba(15, 15, 26, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+        
+        .navbar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-left: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropbtn {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .dropbtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            z-index: 1;
+            right: 0;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(106, 17, 203, 0.1) 0%,
+                rgba(37, 117, 252, 0.1) 50%,
+                rgba(106, 17, 203, 0.1) 100%
+            );
+            z-index: -1;
+            animation: gradientRotate 15s infinite linear;
+            transform-origin: center center;
+        }
+        
+        @keyframes gradientRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .report-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(37, 117, 252, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed var(--glass-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .file-upload-label:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--secondary-color);
+        }
+        
+        .file-upload-label i {
+            font-size: 1.5rem;
+            margin-left: 10px;
+            color: var(--secondary-color);
+        }
+        
+        #file-upload-input {
+            display: none;
+        }
+        
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .file-preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .file-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .file-preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: var(--accent-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .terms-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .terms-container h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .terms-container ul {
+            padding-right: 20px;
+        }
+        
+        .terms-container li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .terms-checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .terms-checkbox label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0) 50%,
+                rgba(255, 255, 255, 0.3) 100%
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            20% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: gray;
+        }
+        
+        .submit-btn:disabled::before {
+            display: none;
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        
+        .success-message i {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            animation: bounce 1s;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        .success-message h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .success-message p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .home-btn {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .home-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0) 50%,
+                rgba(255, 255, 255, 0.3) 100%
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .warning-box {
+            background: rgba(255, 77, 77, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        
+        .warning-box p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .telegram-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+        
+        .telegram-float a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(to right, #0088cc, #00aced);
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 136, 204, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .telegram-float a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 136, 204, 0.7);
+        }
+        
+        .telegram-float i {
+            color: white;
+            font-size: 30px;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 80px 20px 50px;
+                padding: 20px;
+            }
+            
+            .header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .success-message i {
+                font-size: 3rem;
+            }
+            
+            .success-message h2 {
+                font-size: 1.5rem;
+            }
+            
+            .success-message p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="https://i.imgur.com/gLhLYrq.png" alt="SM 1% Logo">
+                <h1>SM 1%</h1>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <i class="fas fa-bars"></i> القائمة
+                </button>
+                <div class="dropdown-content">
+                    <li><a href="/index">الرئيسية</a></li>
+                    <li><a href="/store">المتجر</a></li>
+                    <li><a href="/support">الدعم</a></li>
+                    <li><a href="/law">القوانين</a></li>
+                    <li><a href="/">المتفاعلين</a></li>
+                    <li><a href="/contests">المسابقات</a></li>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div id="reportSection">
+            <div class="header">
+                <h2>قسم البلاغات الخاص بـ SM 1%</h2>
+                <p>مرحبًا بك في قسم البلاغ لشبكة SM 1%. نحن نمنحك قوة الإبلاغ بخصوصية تامة، ومتابعة دقيقة. ساهم في أمان الشبكة... 🔐</p>
+            </div>
+            
+            <div class="warning-box">
+                <p><strong>⛔ تحذير قانوني:</strong> كل بلاغ كاذب أو محاولة تضليل يُعرّض صاحبه للحظر أو المساءلة. يرجى التأكد من صحة المعلومات المقدمة.</p>
+            </div>
+            
+            <form id="reportForm" class="report-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="reporterName">اسمك</label>
+                    <input type="text" id="reporterName" name="reporterName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reporterTelegram">اليوزر الخاص بك على تيليجرام</label>
+                    <input type="text" id="reporterTelegram" name="reporterTelegram" required placeholder="@username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="accusedName">اسم المتهم</label>
+                    <input type="text" id="accusedName" name="accusedName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accusedTelegram">يوزر المتهم</label>
+                    <input type="text" id="accusedTelegram" name="accusedTelegram" required placeholder="@username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reportType">نوع البلاغ</label>
+                    <select id="reportType" name="reportType" required>
+                        <option value="" disabled selected>اختر نوع البلاغ</option>
+                        <option value="غش">غش</option>
+                        <option value="احتيال">احتيال</option>
+                        <option value="تهديد">تهديد</option>
+                        <option value="ابتزاز">ابتزاز</option>
+                        <option value="سلوك مخالف">سلوك مخالف</option>
+                        <option value="إطلاق معلومات كاذبة">إطلاق معلومات كاذبة</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reportDetails">وصف دقيق للواقعة</label>
+                    <textarea id="reportDetails" name="reportDetails" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>رفع صوره توضيحية لخطأ المتهم</label>
+                    <div class="file-upload">
+                        <label for="file-upload-input" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>اضغط لرفع الملفات أو اسحبها هنا</span>
+                        </label>
+                        <input type="file" id="file-upload-input" name="evidence" multiple accept="image/*,video/*,.pdf,.doc,.docx">
+                        <div class="file-preview" id="file-preview"></div>
+                    </div>
+                </div>
+                
+                <div class="terms-container">
+                    <h3>شروط الإبلاغ</h3>
+                    <ul>
+                        <li>يجب أن تكون المعلومات المقدمة صحيحة ودقيقة</li>
+                        <li>البلاغات الكاذبة قد تعرضك للمساءلة </li>
+                        <li>سيتم التعامل مع البلاغ بسرية تامة</li>
+                        <li>لا تستخدم هذا النظام إلا للإبلاغ عن مخالفات حقيقية</li>
+                        <li>يجب تقديم أدلة واضحة على المخالفة</li>
+                        <li>الإدارة تحتفظ بحقها في اتخاذ الإجراء المناسب حسب القوانين</li>
+                    </ul>
+                </div>
+                
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">أقر بأني قد قرأت الشروط وأوافق عليها</label>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">إرسال البلاغ</button>
+            </form>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <h2>شكرًا لك!</h2>
+            <p>تم استلام بلاغك بنجاح وسيتم مراجعته من قبل الإدارة في أقرب وقت ممكن.</p>
+            <a href="/index" class="home-btn">العودة إلى الصفحة الرئيسية</a>
+        </div>
+    </div>
+    
+    <div class="telegram-float">
+        <a href="https://t.me/SM11P" target="_blank">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+    </div>
+    
+    <script>
+        // عرض معاينة الملفات المرفوعة
+        const fileInput = document.getElementById('file-upload-input');
+        const filePreview = document.getElementById('file-preview');
+        
+        fileInput.addEventListener('change', function() {
+            filePreview.innerHTML = '';
+            
+            if (this.files) {
+                Array.from(this.files).forEach(file => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-preview-item';
+                    
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            fileItem.appendChild(img);
+                            
+                            const removeBtn = document.createElement('div');
+                            removeBtn.className = 'remove-btn';
+                            removeBtn.innerHTML = '×';
+                            removeBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                fileItem.remove();
+                                // إزالة الملف من input
+                                const newFiles = Array.from(fileInput.files).filter(f => f !== file);
+                                const dataTransfer = new DataTransfer();
+                                newFiles.forEach(f => dataTransfer.items.add(f));
+                                fileInput.files = dataTransfer.files;
+                            });
+                            fileItem.appendChild(removeBtn);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        const fileIcon = document.createElement('div');
+                        fileIcon.style.display = 'flex';
+                        fileIcon.style.flexDirection = 'column';
+                        fileIcon.style.alignItems = 'center';
+                        fileIcon.style.justifyContent = 'center';
+                        fileIcon.style.height = '100%';
+                        fileIcon.style.color = 'white';
+                        
+                        let iconClass = 'fa-file';
+                        if (file.type.startsWith('video/')) iconClass = 'fa-file-video';
+                        else if (file.type.includes('pdf')) iconClass = 'fa-file-pdf';
+                        else if (file.type.includes('word')) iconClass = 'fa-file-word';
+                        
+                        fileIcon.innerHTML = `
+                            <i class="fas ${iconClass}" style="font-size: 24px; margin-bottom: 5px;"></i>
+                            <span style="font-size: 10px; text-align: center; word-break: break-all; padding: 0 5px;">${file.name}</span>
+                        `;
+                        
+                        fileItem.appendChild(fileIcon);
+                        
+                        const removeBtn = document.createElement('div');
+                        removeBtn.className = 'remove-btn';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            fileItem.remove();
+                            // إزالة الملف من input
+                            const newFiles = Array.from(fileInput.files).filter(f => f !== file);
+                            const dataTransfer = new DataTransfer();
+                            newFiles.forEach(f => dataTransfer.items.add(f));
+                            fileInput.files = dataTransfer.files;
+                        });
+                        fileItem.appendChild(removeBtn);
+                    }
+                    
+                    filePreview.appendChild(fileItem);
+                });
+            }
+        });
+        
+        // إرسال النموذج إلى بوت تيليجرام
+        const reportForm = document.getElementById('reportForm');
+        const reportSection = document.getElementById('reportSection');
+        const successMessage = document.getElementById('successMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        reportForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('يجب الموافقة على شروط الإبلاغ قبل المتابعة');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            
+            try {
+                const formData = new FormData(this);
+                
+                // إضافة معلومات إضافية
+                const reportData = {
+                    reporterName: formData.get('reporterName'),
+                    reporterTelegram: formData.get('reporterTelegram'),
+                    accusedName: formData.get('accusedName'),
+                    accusedTelegram: formData.get('accusedTelegram'),
+                    reportType: formData.get('reportType'),
+                    reportDetails: formData.get('reportDetails'),
+                    timestamp: new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })
+                };
+                
+                // إعداد نص الرسالة
+                let messageText = `📢 *بلاغ جديد* 📢\n\n`;
+                messageText += `👤 *المبلغ:* ${reportData.reporterName}\n`;
+                messageText += `📱 *تيليجرام المبلغ:* ${reportData.reporterTelegram}\n\n`;
+                messageText += `⚖️ *نوع البلاغ:* ${reportData.reportType}\n\n`;
+                messageText += `👤 *المتهم:* ${reportData.accusedName}\n`;
+                messageText += `📱 *تيليجرام المتهم:* ${reportData.accusedTelegram}\n\n`;
+                messageText += `📝 *تفاصيل البلاغ:*\n${reportData.reportDetails}\n\n`;
+                messageText += `🕒 *وقت الإبلاغ:* ${reportData.timestamp}\n`;
+                messageText += `🔗 *رابط النظام:* ${window.location.href}`;
+                
+                // إرسال النص إلى بوت تيليجرام
+                const botToken = '6501359844:AAF84mGvABCJKAaL0cmFF_klFND16RmpPHg';
+                const chatId = '6243639789';
+                
+                // أولاً: إرسال النص
+                const textResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: messageText,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                const textResult = await textResponse.json();
+                
+                if (!textResult.ok) {
+                    throw new Error('فشل إرسال نص البلاغ');
+                }
+                
+                // ثانياً: إرسال الملفات إذا وجدت
+                const files = fileInput.files;
+                if (files.length > 0) {
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        const fileFormData = new FormData();
+                        fileFormData.append('chat_id', chatId);
+                        fileFormData.append('caption', `إثبات #${i + 1} من ${files.length} - ${reportData.reporterName}`);
+                        fileFormData.append('parse_mode', 'Markdown');
+                        
+                        let endpoint = '';
+                        if (file.type.startsWith('image/')) {
+                            endpoint = 'sendPhoto';
+                            fileFormData.append('photo', file);
+                        } else if (file.type.startsWith('video/')) {
+                            endpoint = 'sendVideo';
+                            fileFormData.append('video', file);
+                        } else {
+                            endpoint = 'sendDocument';
+                            fileFormData.append('document', file);
+                        }
+                        
+                        const fileResponse = await fetch(`https://api.telegram.org/bot${botToken}/${endpoint}`, {
+                            method: 'POST',
+                            body: fileFormData
+                        });
+                        
+                        const fileResult = await fileResponse.json();
+                        
+                        if (!fileResult.ok) {
+                            console.error(`فشل إرسال الملف #${i + 1}`, fileResult);
+                        }
+                    }
+                }
+                
+                // عرض رسالة النجاح
+                reportSection.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // إعادة تعيين النموذج
+                reportForm.reset();
+                filePreview.innerHTML = '';
+            } catch (error) {
+                console.error('حدث خطأ أثناء إرسال البلاغ:', error);
+                alert('حدث خطأ أثناء إرسال البلاغ. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'إرسال البلاغ';
+            }
+        });
+        
+        // دعم سحب وإسقاط الملفات
+        const fileUploadLabel = document.querySelector('.file-upload-label');
+        
+        fileUploadLabel.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadLabel.style.borderColor = 'var(--secondary-color)';
+            fileUploadLabel.style.background = 'rgba(37, 117, 252, 0.1)';
+        });
+        
+        fileUploadLabel.addEventListener('dragleave', () => {
+            fileUploadLabel.style.borderColor = 'var(--glass-border)';
+            fileUploadLabel.style.background = 'rgba(255, 255, 255, 0.05)';
+        });
+        
+        fileUploadLabel.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadLabel.style.borderColor = 'var(--glass-border)';
+            fileUploadLabel.style.background = 'rgba(255, 255, 255, 0.05)';
+            
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                const event = new Event('change');
+                fileInput.dispatchEvent(event);
+            }
+        });
+    </script>
+</body>
+</html>

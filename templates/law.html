@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القوانين العامة | SM 1%</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #ff4d4d;
+            --text-color: #f0f0f0;
+            --dark-bg: #0f0f1a;
+            --glass-bg: rgba(15, 15, 26, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+        
+        .navbar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-left: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropbtn {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .dropbtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            z-index: 1;
+            right: 0;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 100px auto 50px;
+            padding: 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(106, 17, 203, 0.1) 0%,
+                rgba(37, 117, 252, 0.1) 50%,
+                rgba(106, 17, 203, 0.1) 100%
+            );
+            z-index: -1;
+            animation: gradientRotate 15s infinite linear;
+            transform-origin: center center;
+        }
+        
+        @keyframes gradientRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .law-section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .law-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .section-title i {
+            margin-left: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .law-item {
+            margin-bottom: 15px;
+            padding-right: 20px;
+            position: relative;
+            line-height: 1.8;
+        }
+        
+        .law-item::before {
+            content: '•';
+            position: absolute;
+            right: 0;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .law-item strong {
+            color: var(--accent-color);
+        }
+        
+        .sub-item {
+            margin-right: 20px;
+            margin-bottom: 10px;
+            padding-right: 15px;
+            position: relative;
+        }
+        
+        .sub-item::before {
+            content: '‣';
+            position: absolute;
+            right: 0;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .warning-box {
+            background: rgba(255, 77, 77, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 30px 0;
+        }
+        
+        .warning-box p {
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        
+        .join-btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .join-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0) 50%,
+                rgba(255, 255, 255, 0.3) 100%
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            20% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        .join-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .footer p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        .telegram-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+        
+        .telegram-float a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(to right, #0088cc, #00aced);
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 136, 204, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .telegram-float a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 136, 204, 0.7);
+        }
+        
+        .telegram-float i {
+            color: white;
+            font-size: 30px;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 80px 20px 50px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="https://i.imgur.com/gLhLYrq.png" alt="SM 1% Logo">
+                <h1>SM 1%</h1>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <i class="fas fa-bars"></i> القائمة
+                </button>
+                <div class="dropdown-content">
+                    <li><a href="/index">الرئيسية</a></li>
+                    <li><a href="/store">المتجر</a></li>
+                    <li><a href="/support">الدعم</a></li>
+                    <li><a href="/">المتفاعلين</a></li>
+                    <li><a href="/contests">المسابقات</a></li>
+                    <li><a href="/report">الإبلاغ</a></li>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📜 القوانين العامة لشبكة SM 1% 📜</h1>
+            <p>نحن نؤمن بحرية التعبير والاحترام المتبادل داخل مجتمعنا. لكن لتحقيق بيئة آمنة ونظيفة، هناك مجموعة من القوانين التي يجب الالتزام بها من جميع الأعضاء. 🚨</p>
+        </div>
+        
+        <div class="law-section">
+            <div class="section-title">
+                <i class="fas fa-unlock"></i>
+                <h2>الحرية مكفولة ولكن ضمن حدود</h2>
+            </div>
+            
+            <div class="law-item">لك كامل الحق في التعبير عن رأيك بكل حرية <strong>✅</strong></div>
+            <div class="law-item">يمكنك الاعتراض أو النقد أو تقديم الملاحظات بحرية تامة، بشرط أن تكون منطقية ومبنية على دليل <strong>🧠</strong></div>
+            <div class="law-item">لا يحق لك فرض رأيك أو تقليل احترام الآخرين بسبب وجهة نظرهم <strong>❌</strong></div>
+        </div>
+        
+        <div class="law-section">
+            <div class="section-title">
+                <i class="fas fa-ban"></i>
+                <h2>ممنوعات واضحة لحماية الجميع</h2>
+            </div>
+            
+            <div class="law-item">عدم الترويج لأي جهة خارجية دون إذن رسمي.</div>
+            <div class="sub-item">إن كنت ترغب في إعلان، تواصل أولًا مع المسؤولين <strong>📩</strong></div>
+            
+            <div class="law-item">احترام الجميع، خصوصًا:</div>
+            <div class="sub-item">الآراء الشخصية <strong>🗣️</strong></div>
+            <div class="sub-item">الخصوصية والحقوق الفكرية <strong>🧾</strong></div>
+            
+            <div class="law-item">ممنوع الاحتيال، الابتزاز، أو الكذب بأي شكل <strong>🕳️</strong></div>
+            <div class="law-item">يمنع إرسال رسائل مكررة أو محاولة التخريب المتعمد داخل المجموعة <strong>📛</strong></div>
+            <div class="law-item">يمنع تمامًا التحريض على القتل أو الاحتيال أو الابتزاز أو السرقة <strong>🕹️</strong></div>
+            <div class="law-item">يمنع التهديد بأي شكل، ويُعتبر خطرًا على المجتمع ويتم طردك فورًا <strong>❗</strong></div>
+            <div class="law-item">أي محاولة لتزوير أو انتحال الملكية الفكرية أو محتوى الشبكة سيُبلغ بها السلطات فورًا، وجميع الحقوق محفوظة <strong>⚖️</strong></div>
+        </div>
+        
+        <div class="law-section">
+            <div class="section-title">
+                <i class="fas fa-users"></i>
+                <h2>شروط العضوية والمشاركة</h2>
+            </div>
+            
+            <div class="law-item">يمنع الدخول بأكثر من حساب أو باستخدام حسابات وهمية <strong>🕵️‍♂️</strong></div>
+            <div class="law-item">في حال استخدام حسابات مكررة للتلاعب بالنقاط أو العجلة، يتم خصم نقاطك أو حظرك نهائيًا <strong>🎯</strong></div>
+            
+            <div class="law-item">إذا رغبت بالحصول على رتبة داخل الشبكة، يجب:</div>
+            <div class="sub-item">التواصل مع المسؤولين مباشرة</div>
+            <div class="sub-item">تقديم معلومات دقيقة وحقيقية + إثبات الهوية <strong>🧾</strong></div>
+            
+            <div class="law-item">تقديم معلومات مزيفة أو كاذبة يؤدي إلى الطرد الفوري من الشبكة <strong>🚫</strong></div>
+        </div>
+        
+        <div class="law-section">
+            <div class="section-title">
+                <i class="fas fa-trophy"></i>
+                <h2>مسابقات وسحوبات</h2>
+            </div>
+            
+            <div class="law-item">السحب والعجلة مجانية للجميع، ولكن:</div>
+            <div class="sub-item">يمنع الغش أو إعطاء معلومات مزورة بهدف الفوز</div>
+            <div class="sub-item">أي محاولة تكرار للفوز أو الدخول بأكثر من حساب، يتم رصدها تقنيًا ومعاقبة صاحبها <strong>💢</strong></div>
+        </div>
+        
+        <div class="law-section">
+            <div class="section-title">
+                <i class="fas fa-shield-alt"></i>
+                <h2>أمان الشبكة</h2>
+            </div>
+            
+            <div class="law-item">محاولة التجسس أو التواطؤ مع مجموعات أخرى يعرضك للمواجهة والعقوبة المباشرة.</div>
+            <div class="sub-item">نحن نمتلك أنظمة حماية متقدمة ونراقب محاولات الاختراق والربط بالمجموعات المزيفة <strong>👁️‍🗨️</strong></div>
+            
+            <div class="law-item">نحن غير مسؤولين عن أي روابط مزيفة أو محاولات تزوير خارج المجموعة.</div>
+            <div class="sub-item">يرجى دائمًا التأكد من التعامل مع الحسابات الرسمية والموثوقة <strong>✅</strong></div>
+        </div>
+        
+        <div class="warning-box">
+            <p><strong>🧠 تذكير:</strong> مخالفات القوانين لا تعني فقط الطرد، بل يمكن أن تشمل: خصم نقاط، فقدان رُتب، منع من الجوائز أو المشاركة، بلاغ رسمي إن لزم الأمر</p>
+        </div>
+        
+        <div class="law-section" style="text-align: center;">
+            <h2 style="color: var(--secondary-color); margin-bottom: 20px;">💬 كن حرًّا، لكن محترمًا</h2>
+            <p style="font-size: 1.2rem; line-height: 1.8;">SM 1% هي مجموعة للنخبة، لا للبَلبلة أو الفوضى.<br>ساعدنا في الحفاظ على شبكة نزيهة، ذكية، قوية.</p>
+            
+            <a href="https://t.me/SM11P" class="join-btn">انضم إلينا</a>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>جميع الحقوق محفوظة &copy; SM 1% 2025</p>
+    </footer>
+    
+    <div class="telegram-float">
+        <a href="https://t.me/SM11P" target="_blank">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+    </div>
+</body>
+</html>
