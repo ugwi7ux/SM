@@ -160,7 +160,7 @@ async def my_rank(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ======== نظام التشغيل الرئيسي ========
 
 def run_flask():
-    port = int(os.getenv('PORT', 8080))
+    port = int(os.getenv('PORT', 8081))
     print(f"🌐 بدء خادم الويب على المنفذ {port}")
     serve(app, host="0.0.0.0", port=port)
 
