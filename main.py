@@ -33,7 +33,7 @@ def init_db():
 # ======== مسارات الويب ========
 
 @app.route('/')
-def home():
+def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/api/top_members')
@@ -81,6 +81,11 @@ def law():
 @app.route('/static/<path:filename>')
 def static_files(filename):
     return send_from_directory(app.static_folder, filename)
+
+# معالجة الأخطاء لصفحات غير موجودة
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 # ======== معالجات البوت ========
 
