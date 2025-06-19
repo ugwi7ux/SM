@@ -1,16 +1,15 @@
 import os
 import sqlite3
 from datetime import datetime
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, send_from_directory
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import asyncio
 import threading
-import requests
-import time
+from waitress import serve
 
 # تهيئة تطبيق Flask
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 # إعدادات البوت
 GROUP_ID = -1002445433249
@@ -32,15 +31,59 @@ def init_db():
         ''')
 
 # ======== مسارات الويب ========
+
 @app.route('/')
 def home():
     return render_template('dashboard.html')
 
-@app.route('/ping')
-def ping():
-    return jsonify({"status": "active", "time": datetime.now().isoformat()}), 200
+@app.route('/api/top_members')
+def api_top_members():
+    try:
+        with sqlite3.connect('interactions.db') as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute('''
+            SELECT user_id, username, first_name, last_name, message_count 
+            FROM users 
+            ORDER BY message_count DESC 
+            LIMIT 20
+            ''')
+            members = [dict(row) for row in cursor.fetchall()]
+        return jsonify(members)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
+@app.route('/store')
+def store():
+    return render_template('store.html')
+
+@app.route('/contests')
+def contests():
+    return render_template('contests.html')
+
+@app.route('/report')
+def report():
+    return render_template('report.html')
+
+@app.route('/support')
+def support():
+    return render_template('support.html')
+
+@app.route('/law')
+def law():
+    return render_template('law.html')
+
+# خدمة الملفات الثابتة (CSS, JS, images)
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory(app.static_folder, filename)
 
 # ======== معالجات البوت ========
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.id == GROUP_ID:
         await update.message.reply_text('مرحباً بكم في بوت تفاعل SM 1%!')
@@ -110,9 +153,9 @@ async def my_rank(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"📊 ترتيبك: {rank}\n✉️ عدد الرسائل: {user_data[0]}")
 
 # ======== نظام التشغيل الرئيسي ========
+
 def run_flask():
-    from waitress import serve
-    port = int(os.getenv('PORT', '8080'))
+    port = int(os.getenv('PORT', 5000))
     print(f"🌐 بدء خادم الويب على المنفذ {port}")
     serve(app, host="0.0.0.0", port=port)
 
@@ -138,22 +181,10 @@ async def run_bot():
         await application.stop()
         await application.shutdown()
 
-def start_keep_alive():
-    time.sleep(10)  # انتظر 10 ثواني لضمان تشغيل الخادم
-    while True:
-        try:
-            requests.get('http://localhost:8080/ping', timeout=5)
-            print("✅ تم التحقق من نشاط الخادم")
-        except Exception as e:
-            print(f"⚠️ فشل التحقق: {str(e)}")
-        time.sleep(300)  # كل 5 دقائق
-
-if __name__ == '__main__':
+def main():
     # تشغيل Flask في thread منفصل
-    threading.Thread(target=run_flask, daemon=True).start()
-    
-    # تشغيل نظام keep-alive
-    threading.Thread(target=start_keep_alive, daemon=True).start()
+    flask_thread = threading.Thread(target=run_flask, daemon=True)
+    flask_thread.start()
     
     # تشغيل البوت
     try:
@@ -162,3 +193,6 @@ if __name__ == '__main__':
         print("🛑 تم إيقاف البوت")
     except Exception as e:
         print(f"🔥 خطأ غير متوقع: {str(e)}")
+
+if __name__ == '__main__':
+    main()
